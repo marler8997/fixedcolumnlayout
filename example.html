@@ -1,0 +1,63 @@
+<html><head>
+<style type="text/css">
+*{margin:0;padding:0}
+.ImageContainerDiv { width: 120px; background: #555}
+.ImageDiv { width:80px; margin: 0 auto; background: blue; height:100px }
+input, button{padding: 5px 10px; margin:3px}
+</style>
+<script type="text/javascript" src="fixedColumnLayout.js"></script>
+<script type="text/javascript">
+var MyImageLayoutSettings = {
+  columnWidth: 120,
+  yPadding: 200,
+  xPadding: 20,
+  yGap: 30,
+  xGap: 40,
+  //extraXSpace : FixedColumnLayout.EXTRA_SPACE_TO_XGAP
+  extraXSpace : FixedColumnLayout.EXTRA_SPACE_TO_XPADDING
+  //extraXSpace : FixedColumnLayout.EXTRA_SPACE_TO_XGAP_XPADDING
+};
+
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
+}
+
+function createRandomImage(content)
+{
+    var height = getRndInteger(50, 800);
+    return '<div class="ImageContainerDiv"><div class="ImageDiv" style="height:' + height + 'px">' + content + '</div></div>';
+}
+function CreateRandomDivs()
+{
+    var count = document.getElementById('CreateRandomDivsText').value;
+
+    var html = '';
+    for(var i = 0; i < count; i++)
+    {
+        html += createRandomImage(i);
+    }
+    document.getElementById('ImagesDiv').innerHTML = html;
+}
+function AddDiv()
+{
+    var div = document.createElement('div');
+    div.innerHTML = createRandomImage("Added");
+    var childDom = div.childNodes[0];
+    FixedColumnLayout.AppendNewChild(document.getElementById('ImagesDiv'), MyImageLayoutSettings, childDom);
+}
+
+</script>
+</head><body onresize="FixedColumnLayout.Layout(document.getElementById('ImagesDiv'), MyImageLayoutSettings)">
+
+<input id="CreateRandomDivsText" type="text" value="5"></input>
+<button onclick="CreateRandomDivs()">CreateRandomDivs</button>
+<br/>
+<button onclick="FixedColumnLayout.Layout(document.getElementById('ImagesDiv'), MyImageLayoutSettings)">ReLayout</button>
+<button onclick="AddDiv()">Add</button>
+<br/>
+<br/>
+
+<div id="ImagesDiv" style="background:#f00;position:relative">
+</div>
+
+</body></html>
